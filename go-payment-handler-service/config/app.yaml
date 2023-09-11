@@ -1,0 +1,10 @@
+payment-os:
+  header:
+    x-payments-os-env: 'test'
+    api-version: '1.1.0'
+
+couchbase:
+  host: 'localhost'
+  username: 'Administrator'
+  password: '123456'
+  bucket: 'pay.saga'
