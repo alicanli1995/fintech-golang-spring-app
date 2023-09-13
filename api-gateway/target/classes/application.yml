@@ -17,16 +17,11 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   main:
     allow-bean-definition-overriding: true
-  #  sql:
-  #    init:
-  #      mode: always
   datasource:
     continue-on-error: false
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
-  jpa:
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: validate
       show-sql: true

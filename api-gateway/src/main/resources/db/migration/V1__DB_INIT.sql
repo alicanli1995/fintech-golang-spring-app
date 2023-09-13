@@ -1,3 +1,17 @@
+drop table if exists public.account cascade;
+drop table if exists public.roles cascade;
+drop table if exists public.user_roles cascade;
+drop sequence if exists public.account_id_seq cascade;
+
+-------------------------------------------------------
+
+create sequence public.account_id_seq
+    start with 1
+    increment by 1
+    no minvalue
+    no maxvalue
+    cache 1;
+
 create table public.account
 (
     id                 bigint       not null
@@ -22,17 +36,7 @@ create table public.account
 alter table public.account
     owner to postgres;
 
-create sequence public.account_id_seq
-    start with 1
-    increment by 1
-    no minvalue
-    no maxvalue
-    cache 1;
-
 -------------------------------------------------------
-
-alter table public.account
-    owner to postgres;
 
 create table public.roles
 (
@@ -50,7 +54,6 @@ create table public.roles
 alter table public.roles
     owner to postgres;
 
-
 -------------------------------------------------------
 create table public.user_roles
 (
@@ -65,4 +68,3 @@ create table public.user_roles
 
 alter table public.user_roles
     owner to postgres;
-
