@@ -1,8 +1,11 @@
 spring:
+  data:
+    couchbase:
+      auto-index: true
   couchbase:
     bootstrap-hosts: localhost
     bucket:
-      name: pay.saga
+      name: payment
       password: 123456
       user: Administrator
   kafka:
@@ -37,7 +40,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${DISCOVERY_SERVICE:localhost:8761}/eureka/
 
 management:
   endpoints:

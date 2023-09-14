@@ -43,3 +43,4 @@ hs_err_pid*
 replay_pid*
 infrastructure/postgres-data/**
 infrastructure/mongo-data/**
+/api-gateway/target/

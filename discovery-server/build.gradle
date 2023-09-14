@@ -1,35 +1,43 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.15'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.15'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'com.paylinkfusion.discovery'
-version = '0.0.1-SNAPSHOT'
+group = 'com.paylinkfusion.payment.discovery'
+version = '0.0.1'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2021.0.8")
+    set('springCloudVersion', "2021.0.8")
 }
 
 dependencies {
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
+
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+springBoot {
+    buildInfo()
+    bootBuildImage {
+        imageName = project.group + "/discovery-service:" + project.version
+    }
 }

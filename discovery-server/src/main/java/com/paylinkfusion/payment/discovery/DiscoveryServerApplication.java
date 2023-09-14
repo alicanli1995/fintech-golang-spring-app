@@ -1,4 +1,4 @@
-package com.paylinkfusion.discovery;
+package com.paylinkfusion.payment.discovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

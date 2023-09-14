@@ -5,8 +5,7 @@ services:
     hostname: redis
     image: redis
     ports:
-    - "6379:6379"
-    
+      - "6379:6379"
 
   redis-commander:
     container_name: redis-commander
@@ -14,9 +13,9 @@ services:
     image: rediscommander/redis-commander:latest
     restart: always
     environment:
-    - REDIS_HOSTS=local:redis:6379
+      - REDIS_HOSTS=local:redis:6379
     ports:
-    - "8081:8081"
+      - "8081:8081"
 
   mailhog:
     image: mailhog/mailhog
@@ -25,23 +24,60 @@ services:
       - "1025:1025"
       - "8025:8025"
 
-  couchbase:
-    container_name: couchbase
-    image: couchbase
+  couchbase-node1:
+    build:
+      context: .
+    container_name: couchbase-node1
     ports:
-      - '8091:8091'
-      - '8092:8092'
-      - '8093:8093'
-      - '8094:8094'
-      - '11210:11210'
+      - "8091-8094:8091-8094"
+      - "11210:11210"
+    environment:
+      NODE_TYPE: DEFAULT
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: 123456
+      CLUSTER_NAME: payment-cluster
+      SERVICES: data,index,query,fts
+      CLUSTER_RAMSIZE: 500
+      BUCKET: payment
+      BUCKET_RAMSIZE: 300
+      ENABLE_FLUSH: 1
+  couchbase-node2:
+    build:
+      context: .
+    container_name: couchbase-node2
+    depends_on:
+      - couchbase-node1
+    environment:
+      NODE_TYPE: CHILD
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: 123456
+      CLUSTER: couchbase-node1
+      SERVICES: data,index,query,fts
+  couchbase-node3:
+    build:
+      context: .
+    container_name: couchbase-node3
+    depends_on:
+      - couchbase-node1
+      - couchbase-node2
+    environment:
+      NODE_TYPE: CHILD
+      CLUSTER_USERNAME: Administrator
+      CLUSTER_PASSWORD: 123456
+      CLUSTER: couchbase-node1
+      SERVICES: data,index,query,fts
+      REBALANCE: 1
 
   zookeeper:
+    hostname: zookeeper
     image: debezium/zookeeper
     ports:
       - "2181:2181"
 
+
   kafka:
     image: confluentinc/cp-kafka
+    hostname: kafka-broker
     depends_on:
       - zookeeper
     ports:
@@ -69,6 +105,7 @@ services:
 
   mongo:
     image: mongo
+    hostname: mongo
     ports:
       - '27017:27017'
     volumes:

@@ -1,4 +1,4 @@
-package com.paylinkfusion.discovery;
+package com.paylinkfusion.payment.discovery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

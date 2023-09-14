@@ -6,9 +6,11 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.manager.bucket.BucketSettings;
 import com.couchbase.client.java.manager.bucket.BucketType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class CouchbaseConfig {
@@ -24,11 +26,19 @@ public class CouchbaseConfig {
     public Bucket getCouchbaseBucket(Cluster cluster) {
         if (!cluster.buckets().getAllBuckets().containsKey(dbProp.getBucketName())) {
             cluster.buckets().createBucket(
-                BucketSettings.create(dbProp.getBucketName())
-                    .bucketType(BucketType.COUCHBASE)
-                    .minimumDurabilityLevel(DurabilityLevel.NONE)
-                    .ramQuotaMB(128));
+                    BucketSettings.create(dbProp.getBucketName()).bucketType(BucketType.COUCHBASE)
+                            .minimumDurabilityLevel(DurabilityLevel.NONE).ramQuotaMB(128));
         }
-        return cluster.bucket(dbProp.getBucketName());
+        final var bucket = cluster.bucket(dbProp.getBucketName());
+        createIfNotExistPrimaryIndex(cluster);
+        return bucket;
+    }
+
+    private void createIfNotExistPrimaryIndex(Cluster cluster) {
+        try {
+            cluster.query("CREATE PRIMARY INDEX ON `" + dbProp.getBucketName() + "`._default._default");
+        } catch (Exception e) {
+            log.info("Primary index already exists");
+        }
     }
 }
