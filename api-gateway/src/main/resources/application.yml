@@ -7,12 +7,13 @@ server:
 
 spring:
   kafka:
+    bootstrap-servers: kafka-broker-1:9092
     admin:
       properties:
-        bootstrap.servers: localhost:19092
+        bootstrap.servers: kafka-broker-1:9092
     producer:
       group-id: user-register-group
-      bootstrap-servers: localhost:19092
+      bootstrap-servers: kafka-broker-1:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   main:
@@ -59,7 +60,7 @@ feign:
 
 eureka:
   instance:
-    hostname: localhost
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true

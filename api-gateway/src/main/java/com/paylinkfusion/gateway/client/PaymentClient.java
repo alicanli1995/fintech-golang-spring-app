@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "PAYMENT-SERVICE", fallback = FallbackForPaymentService.class)
+@FeignClient(value = "payment-service", fallback = FallbackForPaymentService.class)
 public interface PaymentClient {
 
     @PostMapping("/payment")

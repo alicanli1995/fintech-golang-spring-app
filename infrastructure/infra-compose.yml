@@ -28,6 +28,7 @@ services:
     build:
       context: .
     container_name: couchbase-node1
+    hostname: couchbase-node1
     ports:
       - "8091-8094:8091-8094"
       - "11210:11210"
@@ -41,6 +42,9 @@ services:
       BUCKET: payment
       BUCKET_RAMSIZE: 300
       ENABLE_FLUSH: 1
+    networks:
+      - ${GLOBAL_NETWORK}
+
   couchbase-node2:
     build:
       context: .
@@ -53,6 +57,9 @@ services:
       CLUSTER_PASSWORD: 123456
       CLUSTER: couchbase-node1
       SERVICES: data,index,query,fts
+    networks:
+      - ${GLOBAL_NETWORK}
+
   couchbase-node3:
     build:
       context: .
@@ -67,52 +74,23 @@ services:
       CLUSTER: couchbase-node1
       SERVICES: data,index,query,fts
       REBALANCE: 1
-
-  zookeeper:
-    hostname: zookeeper
-    image: debezium/zookeeper
-    ports:
-      - "2181:2181"
-
-
-  kafka:
-    image: confluentinc/cp-kafka
-    hostname: kafka-broker
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-      - "19092:19092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:19092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-
-  kafka-ui:
-    image: quay.io/cloudhut/kowl:master
-    depends_on:
-      - zookeeper
-      - kafka
-    ports:
-      - "8080:8080"
-    environment:
-      KAFKA_BROKERS: kafka:9092
+    networks:
+      - ${GLOBAL_NETWORK}
 
   mongo:
     image: mongo
     hostname: mongo
+    container_name: mongo
     ports:
       - '27017:27017'
     volumes:
       - ./mongo-data:/data/db
+    networks:
+      - ${GLOBAL_NETWORK}
 
   postgres:
     image: postgres:latest
+    hostname: postgres
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -122,3 +100,5 @@ services:
       - '5432:5432'
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - ${GLOBAL_NETWORK}
