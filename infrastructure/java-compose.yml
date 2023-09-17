@@ -5,14 +5,12 @@ services:
     ports:
       - "9095:9095"
     user: root
-    #    depends_on:
-    #      - kafka-broker
     environment:
       - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xms128m -Xmx256m"
-#      - "SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS=kafka-broker:19092"
-#      - "SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP-SERVERS=kafka-broker:19092"
+      - "SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS=kafka-broker-1:9092"
+      - "SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP-SERVERS=kafka-broker-1:9092"
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres"
-      - "SPRING_MONGODB_URI=mongodb://mongodb:27017"
+      - "SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service:8761/eureka/"
     networks:
       - ${GLOBAL_NETWORK}
@@ -24,14 +22,12 @@ services:
     ports:
       - "9595:9595"
     user: root
-#    depends_on:
-#      - kafka-broker
     environment:
       - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xms128m -Xmx256m"
-#      - "SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS=kafka-broker:19092"
-#      - "SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS=kafka-broker:19092"
-#      - "SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS=kafka-broker:19092"
-#      - "SPRING_MONGODB_URI=mongodb://mongodb:27017"
+      - "SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS=kafka-broker-1:9092"
+      - "SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS=kafka-broker-1:9092"
+      - "SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS=kafka-broker-1:9092"
+      - "SPRING_DATA_MONGODB_URI=mongodb://mongo:27017"
       - "SPRING_COUCHBASE_BOOTSTRAP-HOSTS=couchbase-node1"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service:8761/eureka/"
     networks:

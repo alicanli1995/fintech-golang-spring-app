@@ -1,29 +1,28 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://mongo:27017
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017}
       database: test
     couchbase:
       auto-index: true
   couchbase:
-    bootstrap-hosts: couchbase-node1
+    bootstrap-hosts: localhost
     bucket:
       name: payment
       password: 123456
       user: Administrator
   kafka:
-    bootstrap-servers: kafka-broker-1:9092
     admin:
       properties:
-        bootstrap.servers: kafka-broker-1:9092
+        bootstrap.servers: ${SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS:localhost:9092}
     consumer:
-      bootstrap-servers: kafka-broker-1:9092
+      bootstrap-servers: ${SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS:localhost:9092}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: user-register-group
     producer:
       group-id: payment-service
-      bootstrap-servers: kafka-broker-1:9092
+      bootstrap-servers: ${SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS:localhost:9092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   main:
@@ -41,7 +40,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${DISCOVERY_SERVICE:localhost:8761}/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE:http://localhost:8761/eureka/}
 
 management:
   endpoints:

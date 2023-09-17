@@ -7,20 +7,19 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: kafka-broker-1:9092
     admin:
       properties:
-        bootstrap.servers: kafka-broker-1:9092
+        bootstrap.servers: ${SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS:localhost:9092}
     producer:
       group-id: user-register-group
-      bootstrap-servers: kafka-broker-1:9092
+      bootstrap-servers: ${SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS:localhost:9092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   main:
     allow-bean-definition-overriding: true
   datasource:
     continue-on-error: false
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: postgres
     password: postgres
     hibernate:
@@ -65,7 +64,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE:http://localhost:8761/eureka/}
 
 resilience4j.circuitbreaker:
   instances:

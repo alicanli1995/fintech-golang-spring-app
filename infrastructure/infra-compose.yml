@@ -6,6 +6,8 @@ services:
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      - ${GLOBAL_NETWORK}
 
   redis-commander:
     container_name: redis-commander
@@ -16,6 +18,8 @@ services:
       - REDIS_HOSTS=local:redis:6379
     ports:
       - "8081:8081"
+    networks:
+      - ${GLOBAL_NETWORK}
 
   mailhog:
     image: mailhog/mailhog
@@ -23,6 +27,8 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - ${GLOBAL_NETWORK}
 
   couchbase-node1:
     build:
