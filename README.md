@@ -43,25 +43,31 @@ To be implemented
 
 - You can run all services with docker-compose.yml file. But you need to change some environment
   variables.
-- Like as PaymentOS Credentials: `PAYMENT_PUBLIC_KEY` & `PAYMENT_PRIVATE_KEY` and `PAYMENT_APP_ID`.
-  You can change these variables in go-payment-handler-service
-- and open app.env file change your credentials.
+- Need Changes PaymentOS Credentials: `PAYMENT_PUBLIC_KEY` & `PAYMENT_PRIVATE_KEY` and `PAYMENT_APP_ID`.
+  You can change these variables in 
+    `go-payment-handler-service/config/secret.env` file.
 
-#### Run Infrastructure
 
-To be implemented
+#### Run Infrastructure & Services
+
+```shell
+cd infrastructure
+docker-compose up -d
+```
 
 ### What's next?
 
-- [ ] Implementing Docker Compose
-- [ ] Implementing Kubernetes
-- [ ] Implementing CI/CD
+- [x] Implementing Docker Compose
+- [ ] Starting to write documentation
 - [ ] Implementing Unit Tests
 - [ ] Implementing Integration Tests
-- [ ] Starting to write documentation
 - [ ] Starting to frontend development
+- [ ] Implementing Kubernetes
+- [ ] Implementing CI/CD
 
 ## Services
+
+TODO: Add services
 
 ### GoLang
 
