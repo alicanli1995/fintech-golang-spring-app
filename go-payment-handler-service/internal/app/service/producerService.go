@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Trendyol/kafka-konsumer"
+	"github.com/spf13/viper"
 	"go-payment-handler-service/internal/app/models"
 	"log"
 )
@@ -13,7 +14,7 @@ var PaymentSuccessProducer kafka.Producer
 func SetupProducer() {
 	producer, _ := kafka.NewProducer(kafka.ProducerConfig{
 		Writer: kafka.WriterConfig{
-			Brokers: []string{"localhost:19092"},
+			Brokers: []string{viper.Get("kafka.producer").(string)},
 		},
 	})
 

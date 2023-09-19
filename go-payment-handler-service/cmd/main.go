@@ -60,25 +60,39 @@ func configParse() {
 	x.SetConfigName("app")
 	x.SetConfigType("yaml")
 	x.AddConfigPath("./config")
+	x.AddConfigPath("../app/config")
 
 	if err := x.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if errors.As(err, &configFileNotFoundError) {
-			fmt.Println("Config file not found... 🤷‍♂️ 🤷‍♂️ 🤷‍♂️")
+			fmt.Println("Config file not found... 🤷‍♂️ 🤷‍♂️ 🤷‍♂️, fileName: app.yaml")
+		} else {
+			fmt.Println("Config file read error... 🤷‍♂️ 🤷‍♂️ 🤷‍♂️, fileName: app.yaml")
 		}
 	}
 
-	y.AddConfigPath(".")
-	y.SetConfigName("app")
-	y.SetConfigFile("app.env")
+	y.AddConfigPath("./config")
+	y.AddConfigPath("../app/config")
+	y.SetConfigName("secret")
 	y.SetConfigType("env")
+
 	if err := y.ReadInConfig(); err != nil {
-		log.Fatal("Error reading env file", err)
+		var configFileNotFoundError viper.ConfigFileNotFoundError
+		if errors.As(err, &configFileNotFoundError) {
+			fmt.Println("Config file not found... 🤷‍♂️ 🤷‍♂️ 🤷‍♂️, fileName: secret.env")
+		} else {
+			fmt.Println("Config file read error... 🤷‍♂️ 🤷‍♂️ 🤷‍♂️, fileName: secret.env")
+		}
 	}
 
 	viper.AutomaticEnv()
 	_ = viper.MergeConfigMap(x.AllSettings())
 	_ = viper.MergeConfigMap(y.AllSettings())
+
+	// log all config
+	for key, value := range viper.AllSettings() {
+		log.Printf("key: %s, value: %s", key, value)
+	}
 
 	log.Println("Config file loaded successfully... all systems go! 🚀 🚀 🚀")
 }

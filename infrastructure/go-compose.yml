@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  go-notify-service:
+    build:
+      context: ./../go-notify-service
+      dockerfile: ./../go-notify-service/notify-service.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - ${GLOBAL_NETWORK}
+
+  go-query-service:
+    build:
+      context: ./../go-query-service
+      dockerfile: ./../go-query-service/go-query-service.dockerfile
+    restart: always
+    ports:
+      - "1903:1903"
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - ${GLOBAL_NETWORK}
+
+  payment-handler-go:
+    build:
+      context: ./../go-payment-handler-service
+      dockerfile: ./../go-payment-handler-service/payment-handler.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - ${GLOBAL_NETWORK}
+

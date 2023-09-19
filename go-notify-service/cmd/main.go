@@ -141,6 +141,7 @@ func configParse() {
 	x.SetConfigName("app")
 	x.SetConfigType("yaml")
 	x.AddConfigPath("./config")
+	x.AddConfigPath("../app/config")
 
 	if err := x.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError

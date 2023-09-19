@@ -24,8 +24,10 @@ func SendMail(msg models.MailData) {
 	} else {
 		data, err := os.ReadFile(fmt.Sprintf("./email-templates/%s", msg.Template))
 		if err != nil {
-			log.Println(err)
-			return
+			data, err = os.ReadFile(fmt.Sprintf("../app/email-templates/%s", msg.Template))
+			if err != nil {
+				log.Fatal("Can't read email template file")
+			}
 		}
 		mailTemplate := string(data)
 		msgToSend := strings.Replace(mailTemplate, "[%body%]", msg.Content, 1)
@@ -42,7 +44,7 @@ func SendMail(msg models.MailData) {
 
 func getMailConfig() *mail.SMTPServer {
 	server := mail.NewSMTPClient()
-	server.Host = "localhost"
+	server.Host = "mailhog"
 	server.Port = 1025
 	server.KeepAlive = false
 	server.ConnectTimeout = 10 * time.Second

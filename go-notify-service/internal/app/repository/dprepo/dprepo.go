@@ -6,7 +6,7 @@ import (
 )
 
 func (r *CouchbaseRepository) GetTransactionSaga(sagaID string) (*models.TransactionSaga, error) {
-	col := r.Bucket.Scope("_default").Collection("pay-saga")
+	col := r.Bucket.Scope("_default").Collection("_default")
 
 	getResult, err := col.Get(sagaID, nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func (r *CouchbaseRepository) GetTransactionSaga(sagaID string) (*models.Transac
 }
 
 func (r *CouchbaseRepository) UpdateTransactionSaga(saga models.TransactionSaga) error {
-	col := r.Bucket.Scope("_default").Collection("pay-saga")
+	col := r.Bucket.Scope("_default").Collection("_default")
 
 	_, err := col.Replace(saga.SagaID, saga, nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func (r *CouchbaseRepository) UpdateTransactionSaga(saga models.TransactionSaga)
 
 func (r *CouchbaseRepository) QueryTransactionStatusSaga(status string) ([]models.TransactionSaga, error) {
 	queryResult, err := r.Cluster.Query(
-		fmt.Sprintf("SELECT p.* FROM `pay.saga`.`_default`.`pay-saga` p WHERE p.sagaStatus='%s'", status), nil)
+		fmt.Sprintf("SELECT p.* FROM `payment`.`_default`.`_default` p WHERE p.sagaStatus='%s'", status), nil)
 	if err != nil {
 		return nil, err
 	}

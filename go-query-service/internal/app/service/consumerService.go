@@ -15,13 +15,13 @@ func SetupConsumerGroup() {
 	consumerCfg := &kafka.ConsumerConfig{
 		Concurrency: 1,
 		Reader: kafka.ReaderConfig{
-			Brokers: []string{"localhost:19092"},
+			Brokers: []string{"kafka-broker-1:9092"},
 			Topic:   "payment-success",
 			GroupID: "payment-service",
 		},
 		RetryEnabled: true,
 		RetryConfiguration: kafka.RetryConfiguration{
-			Brokers:       []string{"localhost:19092"},
+			Brokers:       []string{"kafka-broker-1:9092"},
 			Topic:         "retry-topic",
 			StartTimeCron: "*/1 * * * *",
 			WorkDuration:  50 * time.Second,

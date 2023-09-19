@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Trendyol/kafka-konsumer"
+	"github.com/spf13/viper"
 	"go-payment-handler-service/internal/app/models"
 	"os"
 	"os/signal"
@@ -15,13 +16,13 @@ func SetupConsumerGroup() {
 	consumerCfg := &kafka.ConsumerConfig{
 		Concurrency: 1,
 		Reader: kafka.ReaderConfig{
-			Brokers: []string{"localhost:19092"},
+			Brokers: []string{viper.Get("kafka.consumer").(string)},
 			Topic:   "payment-request",
 			GroupID: "payment-service",
 		},
 		RetryEnabled: true,
 		RetryConfiguration: kafka.RetryConfiguration{
-			Brokers:       []string{"localhost:19092"},
+			Brokers:       []string{viper.Get("kafka.consumer").(string)},
 			Topic:         "retry-topic",
 			StartTimeCron: "*/1 * * * *",
 			WorkDuration:  50 * time.Second,
