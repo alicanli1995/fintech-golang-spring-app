@@ -33,22 +33,27 @@ public class KafkaConfig {
     @Bean
     public void listAndCreateTopics() {
         Map<String, Object> config = new HashMap<>();
-        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
+        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAdminURL);
 
         try (AdminClient adminClient = AdminClient.create(config)) {
             ListTopicsResult topicsResult = adminClient.listTopics();
             Set<String> topicNames = topicsResult.names().get();
-            log.info("This is the list of topics: " + topicNames);
 
             List<String> desiredTopic = List.of("payment-request", "user-register", "payment-success");
+            desiredTopic
+                    .stream()
+                    .filter(myTopic -> !topicNames.contains(myTopic))
+                    .map(myTopic -> new NewTopic(myTopic, 1, (short) 1))
+                    .forEach(newTopic -> createTopics(adminClient, newTopic));
 
-            for (String topic : desiredTopic) {
-                if (!topicNames.contains(topic)) {
-                    NewTopic newTopic = new NewTopic(topic, 1, (short) 1);
-                    adminClient.createTopics(List.of(newTopic)).all().get();
-                    log.info("Topic Created: " + topic);
-                }
-            }
+        } catch (Exception e) {
+            log.error("Error while creating topic: " + e.getMessage());
+        }
+    }
+
+    private static void createTopics(AdminClient adminClient, NewTopic newTopic) {
+        try {
+            adminClient.createTopics(List.of(newTopic)).all().get();
         } catch (ExecutionException | InterruptedException e) {
             log.error("Error while creating topic: " + e.getMessage());
         }
