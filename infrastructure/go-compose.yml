@@ -5,6 +5,8 @@ services:
       context: ./../go-notify-service
       dockerfile: ./../go-notify-service/notify-service.dockerfile
     restart: always
+    environment:
+      - "ENV=DOCKER"
     deploy:
       mode: replicated
       replicas: 1
@@ -16,6 +18,8 @@ services:
       context: ./../go-query-service
       dockerfile: ./../go-query-service/go-query-service.dockerfile
     restart: always
+    environment:
+      - "ENV=DOCKER"
     ports:
       - "1903:1903"
     deploy:
@@ -29,6 +33,8 @@ services:
       context: ./../go-payment-handler-service
       dockerfile: ./../go-payment-handler-service/payment-handler.dockerfile
     restart: always
+    environment:
+      - "ENV=DOCKER"
     deploy:
       mode: replicated
       replicas: 1

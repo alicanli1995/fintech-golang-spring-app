@@ -13,10 +13,6 @@ Java services use PostgreSQL, MongoDB, Couchbase.<br>
 
 ![Architecture](img/diagram.png)
 
-## How to run
-
-To be implemented
-
 ## Prerequisites
 
 - Docker
@@ -31,13 +27,6 @@ To be implemented
 - Kafka
 - Redis
 
-### Run
-
-1. Run Kafka
-2. Run PostgreSQL & MongoDB & Couchbase
-3. Run MailHog for Mock SMTP Server
-4. Run GoLang services
-5. Run Java services
 
 ## Attention
 
@@ -66,8 +55,6 @@ docker-compose up -d
 - [ ] Implementing CI/CD
 
 ## Services
-
-TODO: Add services
 
 ### GoLang
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	mail "github.com/xhit/go-simple-mail/v2"
 	"go-notify-service/internal/app/models"
 	"log"
@@ -44,7 +45,7 @@ func SendMail(msg models.MailData) {
 
 func getMailConfig() *mail.SMTPServer {
 	server := mail.NewSMTPClient()
-	server.Host = "mailhog"
+	server.Host = viper.Get("mail.host").(string)
 	server.Port = 1025
 	server.KeepAlive = false
 	server.ConnectTimeout = 10 * time.Second

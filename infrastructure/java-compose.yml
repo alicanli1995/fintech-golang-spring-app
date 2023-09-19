@@ -12,6 +12,7 @@ services:
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres"
       - "SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service:8761/eureka/"
+      - "ZIPKIN_URL=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK}
 
@@ -30,6 +31,7 @@ services:
       - "SPRING_DATA_MONGODB_URI=mongodb://mongo:27017"
       - "SPRING_COUCHBASE_BOOTSTRAP-HOSTS=couchbase-node1"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service:8761/eureka/"
+      - "ZIPKIN_URL=http://zipkin:9411"
     networks:
       - ${GLOBAL_NETWORK}
 

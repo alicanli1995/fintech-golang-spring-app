@@ -7,12 +7,15 @@ import (
 	"github.com/spf13/viper"
 	"go-payment-handler-service/internal/app/service"
 	"log"
+	"os"
 	"time"
 )
 
 func main() {
 
-	configParse()
+	env := os.Getenv("ENV")
+
+	configParse(env)
 	initCouchbase()
 
 	go service.SetupConsumerGroup()
@@ -54,10 +57,16 @@ func initCouchbase() {
 	log.Println("Couchbase setup completed and ready to use... 🚀 🚀 🚀")
 }
 
-func configParse() {
+func configParse(env string) {
 	x := viper.New()
 	y := viper.New()
-	x.SetConfigName("app")
+
+	if env == "DOCKER" {
+		x.SetConfigName("app")
+	} else {
+		x.SetConfigName("app-local")
+	}
+
 	x.SetConfigType("yaml")
 	x.AddConfigPath("./config")
 	x.AddConfigPath("../app/config")
@@ -88,11 +97,6 @@ func configParse() {
 	viper.AutomaticEnv()
 	_ = viper.MergeConfigMap(x.AllSettings())
 	_ = viper.MergeConfigMap(y.AllSettings())
-
-	// log all config
-	for key, value := range viper.AllSettings() {
-		log.Printf("key: %s, value: %s", key, value)
-	}
 
 	log.Println("Config file loaded successfully... all systems go! 🚀 🚀 🚀")
 }

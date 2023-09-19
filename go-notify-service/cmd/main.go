@@ -23,7 +23,8 @@ var appConfig config.AppConfig
 var counts int64
 
 func main() {
-	configParse()
+	env := os.Getenv("ENV")
+	configParse(env)
 	initDatabaseOperations()
 	initScheduler()
 
@@ -136,9 +137,13 @@ func openDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-func configParse() {
+func configParse(env string) {
 	x := viper.New()
-	x.SetConfigName("app")
+	if env == "DOCKER" {
+		x.SetConfigName("app")
+	} else {
+		x.SetConfigName("app-local")
+	}
 	x.SetConfigType("yaml")
 	x.AddConfigPath("./config")
 	x.AddConfigPath("../app/config")

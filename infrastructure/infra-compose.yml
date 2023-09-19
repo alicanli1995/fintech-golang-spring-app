@@ -9,6 +9,15 @@ services:
     networks:
       - ${GLOBAL_NETWORK}
 
+  zipkin:
+    image: openzipkin/zipkin:latest
+    hostname: zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - ${GLOBAL_NETWORK}
+
   redis-commander:
     container_name: redis-commander
     hostname: redis-commander

@@ -4,5 +4,8 @@ couchbase:
   password: '123456'
   bucket: 'payment'
 
+mail:
+  host: 'mailhog'
+
 postgres:
   dsn: 'host=postgres port=5432 user=postgres password=postgres sslmode=disable TimeZone=UTC connect_timeout=10'

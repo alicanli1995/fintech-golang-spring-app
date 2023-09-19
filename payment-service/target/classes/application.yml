@@ -1,4 +1,10 @@
 spring:
+  zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL:http://localhost:9411}
+    sleuth:
+      sampler:
+        probability: 1.0
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017}
@@ -14,15 +20,15 @@ spring:
   kafka:
     admin:
       properties:
-        bootstrap.servers: ${SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS:localhost:9092}
+        bootstrap.servers: ${SPRING_KAFKA_ADMIN_PROPERTIES_BOOTSTRAP.SERVERS:localhost:19092}
     consumer:
-      bootstrap-servers: ${SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS:localhost:9092}
+      bootstrap-servers: ${SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS:localhost:19092}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: user-register-group
     producer:
       group-id: payment-service
-      bootstrap-servers: ${SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS:localhost:9092}
+      bootstrap-servers: ${SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS:localhost:19092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   main:

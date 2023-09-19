@@ -4,8 +4,13 @@ server:
     include-binding-errors: always
   port: 9095
 
-
 spring:
+  zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_URL:http://localhost:9411}
+    sleuth:
+      sampler:
+        probability: 1.0
   kafka:
     admin:
       properties:
